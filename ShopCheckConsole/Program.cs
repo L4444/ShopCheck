@@ -26,6 +26,7 @@ foreach (ShopItem s in shopCheckService.ReadAllShopItems())
 
 }
 
+Console.WriteLine("Test Commit");
 
 
 
