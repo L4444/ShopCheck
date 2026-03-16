@@ -17,16 +17,48 @@ startMessage = shopCheckService.IsDBCreated ? "Creating database..." : "Database
 
 Console.WriteLine(startMessage + path);
 
-shopCheckService.CreateNewShopItem(new ShopItem { Name = "Evil" });
 
 
-foreach (ShopItem s in shopCheckService.ReadAllShopItems())
+bool isRunning = true;
+while(isRunning)
 {
-    Console.WriteLine($"Name: {s.Name} Number: {s.Number} Date Created: {s.DateCreated.ToString()}");
+    Console.WriteLine("Welcome to my crude testing framework");
+    Console.WriteLine("q: quit");
+    Console.WriteLine("a: add dummy entry");
+    Console.WriteLine("l: list all entries");
+
+    Console.WriteLine("Enter a command: ");
+    char key = Console.ReadKey().KeyChar;
+    Console.WriteLine();
+
+    if(key == 'q')
+    {
+        isRunning = false;
+    }
+
+    if (key == 'l')
+    {
+        OutputEntries();
+    }
+
+    if(key == 'a')
+    {
+        shopCheckService.CreateNewShopItem(new ShopItem { Name = "Evil" });
+    }
 
 }
 
-Console.WriteLine("Test Commit");
+
+
+
+void OutputEntries()
+{
+    foreach (ShopItem s in shopCheckService.ReadAllShopItems())
+    {
+        Console.WriteLine($"Name: {s.Name} Number: {s.Number} Date Created: {s.DateCreated.ToString()}");
+
+    }
+}
 
 
 
