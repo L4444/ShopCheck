@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ShopCheckConsole/ShopCheckConsole.csproj" />
+  <Project Path="ShopCheckDb/ShopCheckDb.csproj" />
+</Solution>
