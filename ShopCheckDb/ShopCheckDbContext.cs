@@ -13,13 +13,14 @@ namespace ShopCheckDb
         public string DbPath { get; }
         public ShopCheckDbContext()
         {
-
-            var cd = Path.Join(Environment.CurrentDirectory, "..", "..", "..", "Shopping.db");
+            // Put the database file in the project directory
+            var cd = Path.Join(Environment.CurrentDirectory, "..", "..", "..", "..", "Shopping.db");
 
             DbPath = Path.GetFullPath(cd);
 
         }
 
+  
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
        => options.UseSqlite($"Data Source={DbPath}");

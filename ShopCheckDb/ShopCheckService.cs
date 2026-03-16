@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopCheckDb
 {
@@ -12,32 +14,34 @@ namespace ShopCheckDb
         public ShopCheckService(ShopCheckDbContext db)
         {
             _db = db;
-            IsDBCreated = _db.Database.EnsureCreated();
-
-
-            // If it's created, seed it with data.
-            if (IsDBCreated)
-            {
-
-                CreateNewShopItem(new ShopItem { Name = "John Item", Number =44,  });
-                CreateNewShopItem(new ShopItem { Name = "Two Item", Number = 66,  });
-            }
+        
             
 
         }
 
-        public IEnumerable<ShopItem> ReadAllShopItems()
+        public IList<ShopItem> ReadAllShopItems()
         {
-
+            
             return _db.ShopItems.ToArray();
 
         }
 
-        public void CreateNewShopItem(ShopItem item)
+        public List<ValidationResult> CreateNewShopItem(ShopItem item)
         {
             item.DateCreated = DateTime.Now;
+
+            ValidationContext validationContext = new ValidationContext(item);
+            List<ValidationResult> results = new List<ValidationResult>();
+
+            if(!Validator.TryValidateObject(item, validationContext, results, true))
+            {
+                return results;
+            }
+
+            
             _db.ShopItems.Add(item);
             _db.SaveChanges();
+            return null;
         }
 
 
