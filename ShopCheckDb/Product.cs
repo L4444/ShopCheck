@@ -8,25 +8,21 @@ using System.Text;
 
 namespace ShopCheckDb
 {
-    public class ShopItem
+    public class Product
     {
         public int Id { get; private set; }
-        public DateTime DateCreated { get; internal set; }
+        
 
         
-        [MaxLength(5)]
+        [MaxLength(10)]
         public string Name { get; set; }
 
-        [Column(TypeName="varchar(20)")]
-        public string? Url { get; set; }
+        public string Url { get; set; }
 
-        public int? MaxStock { get; set; }
-        public int? MinStock { get; set; }
+        [Range(0,10)]
+        public int MinStock { get; set; }
 
-
-        public int? CurrentStock { get; set; }
-
-        public SuperMarket? BuyFrom { get; set; }
+      
 
   
 

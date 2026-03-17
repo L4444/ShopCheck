@@ -19,28 +19,28 @@ namespace ShopCheckDb
 
         }
 
-        public IList<ShopItem> ReadAllShopItems()
+        public IList<Product> ReadAllProducts()
         {
-            DbSet<ShopItem> allProducts = _db.ShopItems;
+            DbSet<Product> allProducts = _db.Products;
             //allProducts.Add(new ShopItem { Name = "Rand" });
             return allProducts.ToArray();
 
         }
 
-        public List<ValidationResult> CreateNewShopItem(ShopItem item)
+        public List<ValidationResult> CreateNewProduct(Product product)
         {
-            item.DateCreated = DateTime.Now;
+            
 
-            ValidationContext validationContext = new ValidationContext(item);
+            ValidationContext validationContext = new ValidationContext(product);
             List<ValidationResult> results = new List<ValidationResult>();
 
-            if(!Validator.TryValidateObject(item, validationContext, results, true))
+            if(!Validator.TryValidateObject(product, validationContext, results, true))
             {
                 return results;
             }
 
             
-            _db.ShopItems.Add(item);
+            _db.Products.Add(product);
             _db.SaveChanges();
             return null;
         }

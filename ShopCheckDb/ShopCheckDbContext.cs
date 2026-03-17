@@ -8,7 +8,7 @@ namespace ShopCheckDb
 {
     public class ShopCheckDbContext : DbContext
     {
-        public DbSet<ShopItem> ShopItems { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         public string DbPath { get; }
         public ShopCheckDbContext()
