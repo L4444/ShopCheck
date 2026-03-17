@@ -7,7 +7,7 @@ namespace ShopCheckDb
     public class ShopCheckService
     {
 
-        private ShopCheckDbContext _db = null;
+        private ShopCheckDbContext _db = null!;
         public string DbPath { get { return _db.DbPath; } }
         public bool IsDBCreated { get; }
 
@@ -22,12 +22,26 @@ namespace ShopCheckDb
         public IList<Product> ReadAllProducts()
         {
             DbSet<Product> allProducts = _db.Products;
-            //allProducts.Add(new ShopItem { Name = "Rand" });
+            
             return allProducts.ToArray();
 
         }
 
-        public List<ValidationResult> CreateNewProduct(Product product)
+        public Product ReadProduct(int id)
+        {
+            return _db.Products.First<Product>(p => p.Id == id);
+        }
+
+        public void UpdateProduct(int id, Product product)
+        {
+            Product existing = ReadProduct(id);
+            existing.Name = product.Name;
+            existing.Url = product.Url;
+            existing.MinStock = product.MinStock;
+            _db.SaveChanges();
+        }
+
+        public List<ValidationResult> CreateProduct(Product product)
         {
             
 
