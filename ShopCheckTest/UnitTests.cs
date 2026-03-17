@@ -9,8 +9,109 @@ namespace ShopCheckTest
     [DoNotParallelize]
     public sealed class UnitTests
     {
+        public void RunTest(IList<Product> inputProducts, IList<Product> expectedProducts)
+        {
+            ShopCheckDbContext con = new ShopCheckDbContext();
+            try
+            {
 
-      
+                con.Database.EnsureCreated();
+                ShopCheckService serve = new ShopCheckService(con);
+            }
+            finally
+            {
+                con.Database.EnsureDeleted();
+            }
+        }
+
+        [TestMethod]
+        public void TestRunTest()
+        {
+            IList<Product> inputItems = [
+                   new Product { Name = "Eggs1", MinStock = 3,Url = "www.eggs1.com" },
+                    new Product { Name = "Eggs2", MinStock = 6,  Url = "www.eggs2.com" },
+              new Product { Name = "Eggs3", MinStock = 9,  Url = "www.eggs3.com" }];
+
+
+            RunTest(inputItems, inputItems);
+        }
+
+       [TestMethod]
+        public void TestUpdateProduct()
+        {
+            ShopCheckDbContext con = new ShopCheckDbContext();
+            try
+            {
+
+                con.Database.EnsureCreated();
+                ShopCheckService serve = new ShopCheckService(con);
+
+                IList<Product> inputItems = [
+                  new Product { Name = "Eggs1", MinStock = 3, Url = "www.eggs1.com" },
+                new Product { Name = "Eggs2", MinStock = 3, Url = "www.eggs2.com" },
+                new Product { Name = "Eggs3", MinStock = 3, Url = "www.eggs3.com" }];
+
+
+                
+                IList<Product> expectedProducts = [
+                  new Product { Name = "Eggs1-Altered", MinStock = 4, Url = "www.eggs1-altered.com" },
+                new Product { Name = "Eggs2", MinStock = 3, Url = "www.eggs2.com" },
+                new Product { Name = "Eggs3", MinStock = 3, Url = "www.eggs3.com" }];
+
+
+                List<ValidationResult> result = null!;
+                foreach (Product si in inputItems)
+                {
+                    serve.CreateProduct(si);
+
+                }
+                serve.UpdateProduct(1, expectedProducts[0]);
+                IList<Product> actualProducts = serve.ReadAllProducts();
+                 
+                actualProducts.Should().BeEquivalentTo(expectedProducts, options => options.Excluding(p => p.Id));
+            }
+            finally
+            {
+                con.Database.EnsureDeleted();
+            }
+        }
+
+        [TestMethod]
+        public void TestReadProduct()
+        {
+            ShopCheckDbContext con = new ShopCheckDbContext();
+            try
+            {
+
+                con.Database.EnsureCreated();
+                ShopCheckService serve = new ShopCheckService(con);
+
+                IList<Product> inputItems = [
+                  new Product { Name = "Eggs1", MinStock = 3, Url = "www.eggs1.com" },
+                new Product { Name = "Eggs2", MinStock = 3, Url = "www.eggs2.com" },
+                new Product { Name = "Eggs3", MinStock = 3, Url = "www.eggs3.com" }];
+
+
+                // We expect only 
+                Product expectedProduct = inputItems[0];
+
+                List<ValidationResult> result = null!;
+                foreach (Product si in inputItems)
+                {
+                    serve.CreateProduct(si);
+
+                }
+
+                // SQLLite starts at index 1?
+                Product actualProduct = serve.ReadProduct(1);
+                actualProduct.Should().BeEquivalentTo(inputItems[0]);
+            }
+            finally
+            {
+                con.Database.EnsureDeleted();
+            }
+
+        }
 
 
         [TestMethod]
@@ -36,12 +137,12 @@ namespace ShopCheckTest
                 List<Product> expectedItems = new List<Product>();
                 expectedItems.Add(inputItems[2]);
 
-                List<ValidationResult> result = null;
+                List<ValidationResult> result = null!;
                 foreach (Product si in inputItems)
                 {
                    
 
-                    result = serve.CreateNewProduct(si);
+                    result = serve.CreateProduct(si);
                 }
                 Console.WriteLine(result);
 
@@ -82,7 +183,7 @@ namespace ShopCheckTest
                 {
                     
                     
-                    serve.CreateNewProduct(si);
+                    serve.CreateProduct(si);
                 }
 
                 IList<Product> actualItems = serve.ReadAllProducts();
