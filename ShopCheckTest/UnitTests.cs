@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ShopCheckTest
 {
     [TestClass]
+    [DoNotParallelize]
     public sealed class UnitTests
     {
 
@@ -25,17 +26,19 @@ namespace ShopCheckTest
                 ShopCheckService serve = new ShopCheckService(con);
                 Assert.IsEmpty(serve.ReadAllShopItems());
 
-                IList<ShopItem> expectedItems = [
-                    new ShopItem { Name = "Eggs1ffffffffffffffffffffffffffffffffffff", MinStock = -1, MaxStock = 12, Url = "www.eggs1.com" },
-                 new ShopItem { Name = "Eggs2fffffffffffffffffffffffffffffff", MinStock = 6, MaxStock = 12, Url = "www.eggs2.com" },
-                new ShopItem { Name = "Eggs444444", MinStock = 9, MaxStock = 12, Url = "www.eggs3.com" }];
+                IList<ShopItem> inputItems = [
+                    new ShopItem { Name = "Eggs1_Too_Long_Name", MinStock = -1, MaxStock = 12, Url = "www.eggs1.com" },
+                 new ShopItem { Name = "Eggs2_Too_Long_Name", MinStock = 6, MaxStock = 12, Url = "www.eggs2.com" },
+                new ShopItem { Name = "Eggs3", MinStock = 9, MaxStock = 12, Url = "www.eggs3.com" }];
 
+                // We expect only the 3rd item to be stored (eggs3)
+                List<ShopItem> expectedItems = new List<ShopItem>();
+                expectedItems.Add(inputItems[2]);
 
                 List<ValidationResult> result = null;
-                foreach (ShopItem si in expectedItems)
+                foreach (ShopItem si in inputItems)
                 {
-                    // Quick and dirty way to get a deep copy
-                    //ShopItem copy = JsonSerializer.Deserialize<ShopItem>(JsonSerializer.Serialize(si));
+                   
 
                     result = serve.CreateNewShopItem(si);
                 }
@@ -43,7 +46,7 @@ namespace ShopCheckTest
 
                 IList<ShopItem> actualItems = serve.ReadAllShopItems();
 
-                actualItems.Should().BeEmpty();
+                actualItems.Should().BeEquivalentTo(expectedItems, options => options.Excluding(si => si.Id).Excluding(si => si.DateCreated));
 
 
             }
@@ -66,24 +69,24 @@ namespace ShopCheckTest
                 ShopCheckService serve = new ShopCheckService(con);
                 Assert.IsEmpty(serve.ReadAllShopItems());
 
-                IList<ShopItem> expectedItems = [
+                IList<ShopItem> inputItems = [
                     new ShopItem { Name = "Eggs1", MinStock = 3, MaxStock = 12, Url = "www.eggs1.com" },
                     new ShopItem { Name = "Eggs2", MinStock = 6, MaxStock = 12, Url = "www.eggs2.com" },
               new ShopItem { Name = "Eggs3", MinStock = 9, MaxStock = 12, Url = "www.eggs3.com" }];
 
+                // We expect all items to be stored
+                IList<ShopItem> expectedItems = inputItems;
 
-
-                foreach(ShopItem si in expectedItems)
+                foreach (ShopItem si in inputItems)
                 {
-                    // Quick and dirty way to get a deep copy
-                    ShopItem copy = JsonSerializer.Deserialize<ShopItem>(JsonSerializer.Serialize(si));
                     
-                    serve.CreateNewShopItem(copy);
+                    
+                    serve.CreateNewShopItem(si);
                 }
 
-                IList<ShopItem> actualItems = serve.ReadAllShopItems();  
+                IList<ShopItem> actualItems = serve.ReadAllShopItems();
 
-                expectedItems.Should().BeEquivalentTo(actualItems, options => options.Excluding(si => si.Id).Excluding(si => si.DateCreated));
+                actualItems.Should().BeEquivalentTo(expectedItems, options => options.Excluding(si => si.Id).Excluding(si => si.DateCreated));
 
 
             }

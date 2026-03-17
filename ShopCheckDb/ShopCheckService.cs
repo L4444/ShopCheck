@@ -21,8 +21,9 @@ namespace ShopCheckDb
 
         public IList<ShopItem> ReadAllShopItems()
         {
-            
-            return _db.ShopItems.ToArray();
+            DbSet<ShopItem> allProducts = _db.ShopItems;
+            //allProducts.Add(new ShopItem { Name = "Rand" });
+            return allProducts.ToArray();
 
         }
 
