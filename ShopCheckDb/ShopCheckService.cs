@@ -29,7 +29,17 @@ namespace ShopCheckDb
 
         public Product ReadProduct(int id)
         {
-            return _db.Products.First<Product>(p => p.Id == id);
+            Product product = _db.Products.Find(id);
+            
+            return product;
+        }
+
+        public void DeleteProduct(int id)
+        {
+            Product productToDelete = ReadProduct(id);
+            _db.Products.Remove(productToDelete);
+            _db.SaveChanges();
+
         }
 
         public void UpdateProduct(int id, Product product)
