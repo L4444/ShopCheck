@@ -15,8 +15,10 @@ namespace ShopCheckDb
 
         
         [MaxLength(10)]
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Url { get; set; }
 
         [Range(0,10)]

@@ -1,7 +1,8 @@
-﻿using ShopCheckDb;
-using FluentAssertions;
-using System.Text.Json;
+﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using ShopCheckDb;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace ShopCheckTest
 {
@@ -14,11 +15,9 @@ namespace ShopCheckTest
         [TestInitialize]
         public void Setup()
         {
-            con = new ShopCheckDbContext();
-
+            con = Utility.GetShopCheckDbContext();
             con.Database.EnsureCreated();
             serve = new ShopCheckService(con);
-
         }
 
         [TestCleanup]
@@ -27,11 +26,11 @@ namespace ShopCheckTest
             con.Database.EnsureDeleted();
         }
 
-     
 
-    
 
-       [TestMethod]
+
+
+        [TestMethod]
         public void TestUpdateProduct()
         {
          
@@ -98,7 +97,9 @@ namespace ShopCheckTest
             IList<Product> inputItems = [
             new Product { Name = "Eggs1_TOO_LONG_NAME", MinStock = 3,Url = "www.eggs1-TOO_LONG_NAME.com" },
             new Product { Name = "Eggs2", MinStock = -1,  Url = "www.eggs2-NEGATIVE_MIN_STOCK.com" },
-            new Product { Name = "Eggs3", MinStock = 9,  Url = "www.eggs3.com" }];
+            new Product { Name = "Eggs3", MinStock = 9,  Url = "www.eggs3.com" },
+            new Product { Name = "", MinStock = 9, Url = "www.eggs3.com" },
+            new Product { Name = "Eggs3", MinStock = 9, Url = "" }];
 
 
             IList<Product> expectedItems = [
