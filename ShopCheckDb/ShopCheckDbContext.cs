@@ -10,19 +10,14 @@ namespace ShopCheckDb
     {
         public DbSet<Product> Products { get; set; }
 
-        public string DbPath { get; }
-        public ShopCheckDbContext()
+        public ShopCheckDbContext(DbContextOptions<ShopCheckDbContext> options)
+       : base(options)
         {
-            // Put the database file in the project directory
-            var cd = Path.Join(Environment.CurrentDirectory, "..", "..", "..", "..", "Shopping.db");
-
-            DbPath = Path.GetFullPath(cd);
-
         }
+       
 
   
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-       => options.UseSqlite($"Data Source={DbPath}");
+    
     }
 }

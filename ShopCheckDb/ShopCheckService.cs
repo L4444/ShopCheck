@@ -8,7 +8,7 @@ namespace ShopCheckDb
     {
 
         private ShopCheckDbContext _db = null!;
-        public string DbPath { get { return _db.DbPath; } }
+        
         public bool IsDBCreated { get; }
 
         public ShopCheckService(ShopCheckDbContext db)

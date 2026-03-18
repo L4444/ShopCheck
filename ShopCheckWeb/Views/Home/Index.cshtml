@@ -1,0 +1,41 @@
+﻿@using ShopCheckWeb.ViewModels
+@using ShopCheckDb;
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+    
+}
+
+
+<table>
+    <thead>
+        <th> Name </th>
+        <th> Url </th>
+        <th> Min Stock </th>
+    </thead>
+    <tbody>
+
+@{
+    foreach (Product product in Model.Products)
+    {
+        <tr>
+        <td> @product.Name </td>
+        <td> @product.Url </td>
+        <td> @product.MinStock </td>
+        </tr>
+    }
+}
+    </tbody>
+</table>
+   
+<div asp-validation-summary="All"></div>
+<form method="post" asp-controller="Home" asp-action="Create">
+    <label for="Name"> Name </label>
+    <input type="text" name="Name" value="@Model.NewProduct.Name"/>
+    <label for="Name"> Url </label>
+    <input type="text" name="Url" value="@Model.NewProduct.Url" />
+    <label for="Name"> Min Stock </label>
+    <input type="text" name="MinStock" value="@Model.NewProduct.MinStock" />
+    <button>Submit </button>
+</form>
