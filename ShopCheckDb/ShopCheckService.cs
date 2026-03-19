@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ShopCheckDb
 {
-    public class ShopCheckService
+    public class ShopCheckService : IShopCheckService
     {
 
         private ShopCheckDbContext _db = null!;
@@ -14,8 +14,6 @@ namespace ShopCheckDb
         public ShopCheckService(ShopCheckDbContext db)
         {
             _db = db;
-        
-            
 
         }
 
@@ -27,31 +25,38 @@ namespace ShopCheckDb
 
         }
 
-        public Product ReadProduct(int id)
+        /// <summary>
+        /// Tries to return a produce with the id specified, if it can't returns null
+        /// </summary>
+        /// <param name="id">id of product</param>
+        /// <returns>  returns null if cannot find </returns>
+        public Product? ReadProduct(int id)
         {
-            Product product = _db.Products.Find(id);
+            Product? product = _db.Products.Find(id);
             
             return product;
         }
 
-        public void DeleteProduct(int id)
+        public ServiceResult DeleteProduct(int id)
         {
             Product productToDelete = ReadProduct(id);
             _db.Products.Remove(productToDelete);
             _db.SaveChanges();
+            return null; 
 
         }
 
-        public void UpdateProduct(int id, Product product)
+        public ServiceResult UpdateProduct(int id, Product product)
         {
             Product existing = ReadProduct(id);
             existing.Name = product.Name;
             existing.Url = product.Url;
             existing.MinStock = product.MinStock;
             _db.SaveChanges();
+            return null;
         }
 
-        public List<ValidationResult> CreateProduct(Product product)
+        public ServiceResult CreateProduct(Product product)
         {
             
 
@@ -60,7 +65,7 @@ namespace ShopCheckDb
 
             if(!Validator.TryValidateObject(product, validationContext, results, true))
             {
-                return results;
+                return null;
             }
 
             
