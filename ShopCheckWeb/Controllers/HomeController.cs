@@ -8,10 +8,10 @@ namespace ShopCheckWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private ShopCheckService _service = default!;
+        private IShopCheckService _service = default!;
 
       
-        public HomeController(ShopCheckService service)
+        public HomeController(IShopCheckService service)
         {
             _service = service;
         }
@@ -26,14 +26,9 @@ namespace ShopCheckWeb.Controllers
         [HttpPost]
         public IActionResult Create(Product newProduct)
         {
-            Console.WriteLine($"Create New Called");
-            Console.WriteLine($"Name: \'{newProduct.Name}\'");
-            Console.WriteLine($"Url: \'{newProduct.Url}\'");
-            Console.WriteLine($"Min Stock: \'{newProduct.MinStock}\'");
-
 
             var results = _service.CreateProduct(newProduct);
-            if (results == null)
+            if (results.IsValid)
             {
                 return RedirectToAction("Index");
             }
