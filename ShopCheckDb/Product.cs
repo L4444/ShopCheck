@@ -10,7 +10,7 @@ namespace ShopCheckDb
 {
     public class Product
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         
 
         

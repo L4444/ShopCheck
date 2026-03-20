@@ -46,9 +46,9 @@ namespace ShopCheckDb
 
         }
 
-        public ServiceResult UpdateProduct(int id, Product product)
+        public ServiceResult UpdateProduct(Product product)
         {
-            Product existing = ReadProduct(id);
+            Product existing = ReadProduct(product.Id);
             existing.Name = product.Name;
             existing.Url = product.Url;
             existing.MinStock = product.MinStock;
@@ -68,7 +68,7 @@ namespace ShopCheckDb
                 return null;
             }
 
-            
+            product.Id = 0;
             _db.Products.Add(product);
             _db.SaveChanges();
             return null;
