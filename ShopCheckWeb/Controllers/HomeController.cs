@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ShopCheckDb;
 using ShopCheckWeb.Models;
-using ShopCheckWeb.ViewModels;
+
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace ShopCheckWeb.Controllers
 {
@@ -10,38 +13,72 @@ namespace ShopCheckWeb.Controllers
     {
         private IShopCheckService _service = default!;
 
-      
+       
         public HomeController(IShopCheckService service)
         {
             _service = service;
         }
         public IActionResult Index()
         {
-            var vm = new IndexViewModel();
-            vm.Products = _service.ReadAllProducts();
-            vm.NewProduct = new Product();
-            return View(vm);
+            var products = _service.ReadAllProducts();   
+            return View(products);
         }
 
         [HttpPost]
-        public IActionResult Create(Product newProduct)
+        public IActionResult Delete(int id)
         {
+            _service.DeleteProduct(id);
+            return RedirectToAction("Index");
+        }
+        
+        public IActionResult Create()
+        {
+            var product = new Product();
+            product.MinStock = 1;
+            return View("ProductForm",product);
+        }
 
-            var results = _service.CreateProduct(newProduct);
-            if (results.IsValid)
+        public IActionResult Edit(int id)
+        {
+            var product = _service.ReadProduct(id);   
+            return View("ProductForm", product);
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            var results = _service.UpdateProduct(product);
+            return Validate(results, product);
+        }
+
+        private IActionResult Validate(ServiceResult serviceResult, Product product)
+        {
+            if (serviceResult.IsValid)
             {
                 return RedirectToAction("Index");
             }
             else
             {
-                var vm = new IndexViewModel();
-                vm.NewProduct = newProduct;
-                vm.Products = _service.ReadAllProducts();
-                return View("Index", vm);
+                ModelState.Clear();
+
+                foreach (var kvp in serviceResult.ValidationErrors)
+                {
+                    ModelState.AddModelError(kvp.Key, kvp.Value);
+                }
+
+                return View("ProductForm", product);
             }
+        }
+        
+        [HttpPost]
+        public IActionResult Create(Product product)
+        {
+            var results = _service.CreateProduct(product);
+            return Validate(results, product);
             
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

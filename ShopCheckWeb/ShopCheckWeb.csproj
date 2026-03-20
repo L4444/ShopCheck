@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ShopCheckDb\ShopCheckDb.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>
