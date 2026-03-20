@@ -1,0 +1,40 @@
+﻿@using ShopCheckDb
+
+@model Product
+
+
+@{
+
+    bool isEditing = Model.Id != 0;
+    string title = isEditing ? "Editing Product" : "Creating Product";
+    string formAction = isEditing ? "Edit" : "Create";
+}
+
+
+<h1> @title </h1>
+
+
+<div asp-validation-summary="All"></div>
+<form method="post" asp-controller="Home" asp-action="@formAction">
+    
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"> Name </label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    
+    <label asp-for="MinStock" class="form-label mr-3"> Min Stock </label>
+    <div class="btn-group" role="group">
+        @for (int i = 1; i <= 5; i++)
+        {
+            <input type="radio" class="btn-check" asp-for="MinStock" id="@( "r" + i)" value="@i" autocomplete="off">
+            <label class="btn btn-outline-success" for="@( "r" + i)">@i</label>
+        }
+        
+        </div>
+        <div class="mb-3">
+            <label asp-for="Url" class="form-label"> Url </label>
+            <input type="text" asp-for="Url" class="form-control" />
+        </div>
+        <button class="btn btn-success">Submit </button>
+</form>
