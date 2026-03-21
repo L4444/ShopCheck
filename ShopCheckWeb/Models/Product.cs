@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace ShopCheckDb
+namespace ShopCheckWeb
 {
     public class Product
     {
@@ -14,7 +14,7 @@ namespace ShopCheckDb
 
         [MaxLength(10, ErrorMessage = "The maximum length for a product name is 10 letters")]
         [Required(ErrorMessage = "A product name is required")]
-        public string Name { get; set; }
+        public string Name { get; set; } = String.Empty;
 
         public string? Url { get; set; }
 

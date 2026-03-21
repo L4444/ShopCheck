@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopCheckDb
+namespace ShopCheckWeb
 {
     public class ServiceResult
     {

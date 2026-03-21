@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using ShopCheckDb;
-using ShopCheckWeb.Mocks;
+using ShopCheckWeb;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ShopCheckDbContext>(options => options.UseSqlite("Data Source=Shopping.db"));
-builder.Services.AddScoped<IShopCheckService, ShopCheckService>();
+builder.Services.AddScoped<ShopCheckService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

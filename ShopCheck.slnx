@@ -1,6 +1,7 @@
 <Solution>
-  <Project Path="ShopCheckDb/ShopCheckDb.csproj" />
-  <Project Path="ShopCheckTest/ShopCheckTest.csproj" Id="4fe33430-7f16-42f6-9a9c-25ab1a4b413e" />
+  <Project Path="ShopCheckTest/ShopCheckTest.csproj" Id="4fe33430-7f16-42f6-9a9c-25ab1a4b413e">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="ShopCheckWeb/ShopCheckWeb.csproj" Id="5f1cf075-9e93-4efa-a8c3-53634043e56e">
     <Build Solution="Debug|*" Project="false" />
   </Project>

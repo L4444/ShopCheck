@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 
-namespace ShopCheckDb
+namespace ShopCheckWeb
 {
-    public class ShopCheckService : IShopCheckService
+    public class ShopCheckService 
     {
 
         private ShopCheckDbContext _db = null!;
