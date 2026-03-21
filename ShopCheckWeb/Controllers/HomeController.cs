@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using ShopCheckDb;
+using ShopCheckWeb;
 using ShopCheckWeb.Models;
 
 using System.ComponentModel.DataAnnotations;
@@ -11,10 +11,10 @@ namespace ShopCheckWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private IShopCheckService _service = default!;
+        private ShopCheckService _service = default!;
 
        
-        public HomeController(IShopCheckService service)
+        public HomeController(ShopCheckService service)
         {
             _service = service;
         }

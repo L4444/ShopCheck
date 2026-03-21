@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using ShopCheckDb;
+using ShopCheckWeb;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
@@ -43,7 +43,7 @@ namespace ShopCheckTest
 
                 
             IList<Product> expectedProducts = [
-                new Product { Id= 1, Name = "Eggs1-Altered", MinStock = 4, Url = "www.eggs1-altered.com" },
+                new Product { Id= 1, Name = "Eggs1-A", MinStock = 4, Url = "www.eggs1-altered.com" },
             new Product {  Id= 2, Name = "Eggs2", MinStock = 3, Url = "www.eggs2.com" },
             new Product {  Id= 3, Name = "Eggs3", MinStock = 3, Url = "www.eggs3.com" }];
 
@@ -103,7 +103,8 @@ namespace ShopCheckTest
 
 
             IList<Product> expectedItems = [
-            new Product { Id = 1, Name = "Eggs3", MinStock = 9,  Url = "www.eggs3.com" }];
+            new Product { Id = 1, Name = "Eggs3", MinStock = 9,  Url = "www.eggs3.com" },
+            new Product { Id = 2,  Name = "Eggs3", MinStock = 9, Url = "" }];
 
 
             // Act

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShopCheckDb;
+using ShopCheckWeb;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ namespace ShopCheckTest
         internal static ShopCheckDbContext GetShopCheckDbContext()
         {
             // Put the database file in the project directory
-            var cd = Path.Join(Environment.CurrentDirectory, "..", "..", "..", "Shopping.db");
+            var cd = Path.Join(Environment.CurrentDirectory, "..", "..", "..", "ShopcheckTest.db");
 
             string path = Path.GetFullPath(cd);
             Console.WriteLine($"Getting ShopDbContext from \'{path}\'");
