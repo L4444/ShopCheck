@@ -11,22 +11,15 @@ namespace ShopCheckDb
     public class Product
     {
         public int Id { get; set; }
-        
 
-        
-        [MaxLength(10)]
-        [Required]
+        [MaxLength(10, ErrorMessage = "The maximum length for a product name is 10 letters")]
+        [Required(ErrorMessage = "A product name is required")]
         public string Name { get; set; }
 
-        [Required]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
-        [Range(0,10)]
+        [Range(1,10)]
         public int MinStock { get; set; }
-
-      
-
-  
 
     }
 

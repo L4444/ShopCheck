@@ -10,8 +10,8 @@ namespace ShopCheckTest
     [DoNotParallelize]
     public sealed class UnitTests
     {
-        private ShopCheckDbContext con;
-        private ShopCheckService serve;
+        private ShopCheckDbContext con = default!;
+        private ShopCheckService serve = default!;
         [TestInitialize]
         public void Setup()
         {
@@ -48,7 +48,7 @@ namespace ShopCheckTest
             new Product {  Id= 3, Name = "Eggs3", MinStock = 3, Url = "www.eggs3.com" }];
 
 
-            List<ValidationResult> result = null!;
+            
             foreach (Product p in inputItems)
             {
                 serve.CreateProduct(p);
